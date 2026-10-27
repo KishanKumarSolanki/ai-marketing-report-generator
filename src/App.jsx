@@ -182,7 +182,7 @@ export default function App() {
     { month: formatMonth(month).split(" ")[0].slice(0, 3), spend: metrics.spend, revenue: metrics.revenue }
   ];
 
-  const sidebar = <aside className={`${mobileOpen ? "fixed inset-y-0 left-0 z-50 flex w-72" : "hidden"} sidebar lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-64 lg:shrink-0 lg:flex-col`}>
+  const sidebar = <aside className={`${mobileOpen ? "mobile-sidebar fixed inset-y-0 left-0 z-50 flex w-72 flex-col" : "hidden"} sidebar lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-64 lg:shrink-0 lg:flex-col`}>
     <div className="flex h-[88px] items-center gap-3 border-b border-line px-5">
       <div className="grid h-11 w-11 place-items-center rounded-2xl bg-brand shadow-glow"><BarChart3 size={23} className="text-white"/></div>
       <div><div className="font-bold tracking-tight text-white">Report Studio</div><div className="text-xs text-slate-400">AI Marketing Intelligence</div></div>
@@ -217,19 +217,19 @@ export default function App() {
     {sidebar}
     {mobileOpen && <button className="fixed inset-0 z-40 bg-black/60 lg:hidden" onClick={() => setMobileOpen(false)} aria-label="Close navigation"/>}
     <main className="min-w-0 flex-1">
-      <header className="topbar sticky top-0 z-30 flex min-h-[72px] flex-wrap items-center justify-between gap-3 px-4 py-3 md:px-7">
+      <header className="mobile-header topbar sticky top-0 z-30 flex min-h-[72px] flex-wrap items-center justify-between gap-3 px-4 py-3 md:px-7">
         <div className="flex items-center gap-3">
           <button className="icon-btn lg:hidden" onClick={() => setMobileOpen(true)} aria-label="Open menu"><Menu size={19}/></button>
           <div className="hidden items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-3 py-1.5 text-xs font-medium text-brand-200 sm:flex"><span className="h-1.5 w-1.5 rounded-full bg-brand-300"/>{activeClient?.name || "No client"}</div>
           <div className="rounded-full border border-line bg-panel2 px-3 py-1.5 text-xs text-slate-300">{formatMonth(month)}</div>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="mobile-header-actions flex flex-wrap items-center gap-2">
           <button className="btn-secondary !py-2 !text-xs" onClick={exportActions.csv}><FileSpreadsheet size={15}/> Export CSV</button>
           <button className="btn-primary !py-2 !text-xs" onClick={() => changePage("upload")}><Upload size={15}/> Upload data</button>
         </div>
       </header>
 
-      <div className="mx-auto max-w-[1600px] p-4 md:p-7">
+      <div className="mobile-page-content mx-auto max-w-[1600px] p-4 md:p-7">
         {notice && <div className="mb-5 flex items-start gap-2 rounded-xl border border-brand/40 bg-brand/10 px-4 py-3 text-sm text-brand-100"><CircleHelp size={17} className="mt-0.5 shrink-0"/><span>{notice}</span><button className="ml-auto" onClick={() => setNotice("")}><X size={16}/></button></div>}
 
         {page === "dashboard" && <>
@@ -241,13 +241,13 @@ export default function App() {
             <div className="rounded-xl border border-white/10 bg-black/15 px-5 py-4"><p className="text-xs uppercase tracking-wide text-slate-400">Total investment</p><p className="mt-1 text-2xl font-extrabold text-mint">{money(metrics.spend)}</p></div>
           </div>
           {!hasData && <div className="mb-5"><EmptyState title="No data for this month" description="Upload a CSV or switch the reporting month to a month containing sample data."/></div>}
-          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mb-6 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
             <MetricCard label="Total Ad Spend" value={money(metrics.spend)} detail={hasData ? `${number(metrics.impressions)} impressions tracked` : "No records"} icon={Gauge} color="purple"/>
             <MetricCard label="Revenue / ROAS" value={money(metrics.revenue)} detail={metrics.roas == null ? "ROAS unavailable" : `${metrics.roas.toFixed(2)}x blended ROAS`} icon={TrendingUp} color="green"/>
             <MetricCard label="Paid Conversions" value={number(metrics.conversions)} detail={metrics.cpa == null ? "CPA unavailable" : `Avg. CPA ${money(metrics.cpa)}`} icon={Target} color="blue"/>
             <MetricCard label="Total Reach" value={number(metrics.reach)} detail={`${number(metrics.clicks)} clicks`} icon={Activity} color="pink"/>
           </div>
-          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mb-6 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
             <MetricCard label="Average CPM" value={metrics.cpm == null ? "N/A" : money(metrics.cpm)} icon={BarChart3}/>
             <MetricCard label="Average CPC" value={metrics.cpc == null ? "N/A" : money(metrics.cpc)} icon={Target} color="green"/>
             <MetricCard label="Average CTR" value={metrics.ctr == null ? "N/A" : percent(metrics.ctr)} icon={Activity} color="blue"/>
